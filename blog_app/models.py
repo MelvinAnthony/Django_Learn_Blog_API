@@ -8,14 +8,14 @@ from django.template.defaultfilters import slugify
 # Create your models here.
 class Blog(models.Model):
     name = models.CharField(max_length=100)
-    author = models.CharField(max_length=200)
+    #author = models.CharField(max_length=100)
     description = models.TextField()
-    post_date = models.DateField(default=date.today)
+    post_date = models.DateField(auto_now_add=True)
     is_public = models.BooleanField(default=True)
     slug = models.CharField(max_length=1000, null=True, blank=True)
 
     def __str__(self):
-        return self.name + " ==> " + str(self.author)
+        return self.name 
 
     def save(self, *args, **kwargs):
         if not self.slug:

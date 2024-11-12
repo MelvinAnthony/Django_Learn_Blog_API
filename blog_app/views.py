@@ -3,28 +3,42 @@ from rest_framework.response import Response
 from .serializer import *
 from .models import *
 from rest_framework.decorators import api_view
+from rest_framework import status
 
 @api_view(['GET','POST'])
 def blog_list(request):
     if request.method == 'GET':
         all_blog = Blog.objects.filter(is_public = True)
         serializer = BlogSerializsers(all_blog, many=True)
-        return Response(serializer.data) 
+        return Response(serializer.data,status=status.HTTP_200_OK) 
     
     if request.method == "POST":
         serializer = BlogSerializsers(data = request.data)
-        if serializer.is_valid:
+        if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.error)
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
         
 
-@api_view(['GET'])
+@api_view(['GET','PUT','DELETE'])
 def blog_detials(request,pk):
-    blog = Blog.objects.get(is_public = True, pk=pk)
-    serializer = BlogSerializsers(blog)
+    if request.method == 'GET':
+        blog = Blog.objects.get(is_public = True, pk=pk)
+        serializer = BlogSerializsers(blog)
 
-    return Response(serializer.data)
- 
-
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    if request.method == "PUT":
+        blog = Blog.objects.get(is_public = True, pk=pk)
+        serializer = BlogSerializsers(blog,data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        
+    if request.method == 'DELETE':
+        blog = Blog.objects.get(is_public = True,pk=pk)
+        blog.delete()
+        return Response("Data Delete Sucessfully", status=status.HTTP_200_OK)
