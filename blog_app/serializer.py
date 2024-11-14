@@ -1,6 +1,32 @@
 from rest_framework import serializers
-from blog_app.models import Blog
+from blog_app.models import *
 
+
+
+class BlogSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Blog
+        fields = '__all__'
+
+class CategorySerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField()
+    category = BlogSerializer(many = True, read_only = True)
+    class Meta:
+        model = Category
+        exclude = ['id',]
+
+
+
+
+
+
+
+
+
+
+
+'''
 # def blog_title_valid(value):
 #     if len(value) < 5:
 #         raise serializers.ValidationError("Name is too short, it should have at least 5 characters.")
@@ -74,3 +100,8 @@ class BlogSerializsers(serializers.ModelSerializer):
 #         instance.slug = validated_data.get("slug",instance.slug)
 #         instance.save()
 #         return instance
+
+'''
+
+
+

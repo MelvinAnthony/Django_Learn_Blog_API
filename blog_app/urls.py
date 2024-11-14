@@ -10,7 +10,11 @@ urlpatterns = [
 
                 # Create class based urls
     path('class_blog_list/', views.BlogListView.as_view(), name= "all_blog_list"),
-    path('class_blog_detial/<int:pk>/', views.BlogDetialsView.as_view(),name = "detial_blog")
+    path('class_blog_detial/<int:pk>/', views.BlogDetialsView.as_view(),name = "detial_blog"),
+
+                    # category URLs
+    path('category_list/',views.CategoryListViews.as_view(), name='category_list'),
+    path('category_detial/<int:pk>/',views.CategoryDetialViews.as_view(), name='category_detial'),
 
             
 ]
