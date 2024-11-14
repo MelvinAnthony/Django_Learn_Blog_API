@@ -1,24 +1,31 @@
 from rest_framework import serializers
 from blog_app.models import Blog
 
-def blog_title_valid(value):
-    if len(value) < 5:
-        raise serializers.ValidationError("Name is too short, it should have at least 5 characters.")
-    return value
+# def blog_title_valid(value):
+#     if len(value) < 5:
+#         raise serializers.ValidationError("Name is too short, it should have at least 5 characters.")
+#     return value
 
 class BlogSerializsers(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    blog_title = serializers.CharField(validators=[blog_title_valid])  
-    blog_description = serializers.CharField()
-    post_date = serializers.DateField(required=True)
-    is_public = serializers.BooleanField()
-    slug = serializers.CharField(required=True)
+    # id = serializers.IntegerField(read_only=True)
+    # blog_title = serializers.CharField(validators=[blog_title_valid])  
+    # blog_description = serializers.CharField()
+    # post_date = serializers.DateField(required=True)
+    # is_public = serializers.BooleanField()
+    # slug = serializers.CharField(required=True)
+
+
+
+    len_blog_title = serializers.SerializerMethodField()
 
     class Meta:
         model = Blog
         fields = '__all__'
         #fields = ['blog_title','blog_description','data','is_public']          for filter the specific data to gather
         #exclude = ['data','is_public']                              for filter the speific data for skip to gather
+    
+    def get_len_blog_title(self,object):
+        return len(object.blog_title)
 
     #                 #field level validation
     # def validate_name(self, value):
@@ -39,8 +46,8 @@ class BlogSerializsers(serializers.ModelSerializer):
 
                         #object level validation
     # def validate(self, data):
-    #     if data['blog_title'] == "Raj" and len(data['blog_description']) < 10:
-    #         raise serializers.ValidationError('Name is "Raj" and description is too short (less than 10 characters).')
+    #     if data['blog_title'] ==  data['blog_description']:
+    #         raise serializers.ValidationError('Name is and description Not a same')
     #     return data
 
                     # serializers for create manually
