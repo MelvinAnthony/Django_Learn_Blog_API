@@ -29,5 +29,11 @@ urlpatterns = [
     path('blog_reterive_createapiview/<int:pk>',views.BlogReteriveCon.as_view(), name='blog_reterive_createapiview'),
     path('blog_destory_createapiview/<int:pk>',views.BlogDestoryCon.as_view(), name='blog_destory_createapiview'),
     path('blog_update_createapiview/<int:pk>',views.BlogUpdateCon.as_view(), name='blog_update_createapiview'),
+    
+    
+    
+    path('blog_reterive_destory_createapiview/<int:pk>',views.BlogReteriveDestoryApiView.as_view(), name='blog_reterive_destory_createapiview'),
+    path('blog_list_create_createapiview/',views.BlogListCreateApiView.as_view(), name='blog_list_create_createapiview'),
+    path('blog_create_update_delete_createapiview/<int:pk>',views.BlogRUDApiView.as_view(), name='blog_create_update_delete_createapiview'),
             
 ]

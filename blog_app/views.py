@@ -163,3 +163,16 @@ class BlogDestoryCon(generics.DestroyAPIView):
 class BlogUpdateCon(generics.UpdateAPIView):
     queryset = Blog.objects.all()
     serializer_class  = BlogSerializer
+
+
+class BlogReteriveDestoryApiView(generics.RetrieveDestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class  = BlogSerializer
+
+class BlogListCreateApiView(generics.ListCreateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class  = BlogSerializer
+
+class BlogRUDApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class  = BlogSerializer
