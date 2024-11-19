@@ -7,16 +7,19 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 
+from rest_framework import mixins, generics
+
+
 class CategoryListViews(APIView):
     def get(self,request):
         all_category = Category.objects.all()
-        serializer = CategorySerializer(all_category, many = True)
+        serializer = CategorySerializer(all_category, many = True, context = {'request' : request})
         return Response(serializer.data)
     
 class CategoryDetialViews(APIView):
     def get(self,request, pk):
         single_category = Category.objects.get(pk=pk)
-        serializer = CategorySerializer(single_category)
+        serializer = CategorySerializer(single_category, context = {'request' : request})
         return Response(serializer.data)
 
 # GET, POST -> method work here
@@ -57,6 +60,43 @@ class BlogDetialsView(APIView):
         blog = Blog.objects.get(is_public = True,pk=pk)
         blog.delete()
         return Response("Data Delete Sucessfully", status=status.HTTP_200_OK)
+    
+
+
+# --------------------- generic view --------------------------------
+
+class BlogListGenericView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+
+    def get(self, request, *args, **kwargs):
+        # Handle GET requests
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        # Handle POST requests
+        return self.create(request, *args, **kwargs)
+
+class BlogDetialGenericView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin, mixins.DestroyModelMixin ,generics.GenericAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+
+    def get(self, request, *args, **kwargs):
+        # Handle Get Specific requests
+        return self.retrieve(request, *args, **kwargs)
+    
+    def put(self, request, *args, **kwargs):
+        # Handle PUT requests
+        return self.update(request, *args, **kwargs)
+    def delete(self, request, *args, **kwargs):
+        # Handle delete requests
+        return self.destroy(request, *args, **kwargs)
+    
+
+
+
+    
+
 
 
 '''

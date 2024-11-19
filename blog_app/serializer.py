@@ -9,12 +9,35 @@ class BlogSerializer(serializers.ModelSerializer):
         model = Blog
         fields = '__all__'
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
     category_name = serializers.CharField()
     category = BlogSerializer(many = True, read_only = True)
+
+
+
     class Meta:
         model = Category
-        exclude = ['id',]
+        fields = '__all__'
+
+
+
+# class CategorySerializer(serializers.ModelSerializer):
+#     #category_name = serializers.CharField()
+#     #category = BlogSerializer(many = True, read_only = True)
+#     #category = serializers.StringRelatedField(many = True)
+#     #category = serializers.PrimaryKeyRelatedField(many = True, read_only = True)
+
+#     # category = serializers.HyperlinkedRelatedField(
+#     #     many = True, 
+#     #     read_only = True,
+#     #     view_name = 'detial_blog'        
+#     # )
+
+#     #category = serializers.SlugRelatedField(many = True, read_only = True, slug_field = 'slug')
+    
+    # class Meta:
+    #     model = Category
+    #     exclude = ['id',]
 
 
 
