@@ -9,7 +9,49 @@ from rest_framework.views import APIView
 
 from rest_framework import mixins, generics
 
+# -------------- Funtion based Views
+'''
+@api_view(['GET','POST'])
+def blog_list(request):
+    if request.method == 'GET':
+        all_blog = Blog.objects.filter(is_public = True)
+        serializer = BlogSerializsers(all_blog, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK) 
+    
+    if request.method == "POST":
+        serializer = BlogSerializsers(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        
 
+@api_view(['GET','PUT','DELETE'])
+def blog_detials(request,pk):
+    if request.method == 'GET':
+        blog = Blog.objects.get(is_public = True, pk=pk)
+        serializer = BlogSerializsers(blog)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    if request.method == "PUT":
+        blog = Blog.objects.get(is_public = True, pk=pk)
+        serializer = BlogSerializsers(blog,data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        
+    if request.method == 'DELETE':
+        blog = Blog.objects.get(is_public = True,pk=pk)
+        blog.delete()
+        return Response("Data Delete Sucessfully", status=status.HTTP_200_OK)
+
+'''
+
+# --------------- class Based views
 class CategoryListViews(APIView):
     def get(self,request):
         all_category = Category.objects.all()
@@ -80,6 +122,7 @@ class BlogListGenericView(mixins.ListModelMixin, mixins.CreateModelMixin, generi
 class BlogDetialGenericView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin, mixins.DestroyModelMixin ,generics.GenericAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    lookup_field = 'slug'
 
     def get(self, request, *args, **kwargs):
         # Handle Get Specific requests
@@ -95,47 +138,28 @@ class BlogDetialGenericView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin, m
 
 
 
-    
+# -------------- Concrete View Classes
+
+class BlogCreateCon(generics.CreateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class  = BlogSerializer
 
 
+class BlogListCon(generics.ListAPIView):
+    queryset = Blog.objects.all()
+    serializer_class  = BlogSerializer
 
-'''
-@api_view(['GET','POST'])
-def blog_list(request):
-    if request.method == 'GET':
-        all_blog = Blog.objects.filter(is_public = True)
-        serializer = BlogSerializsers(all_blog, many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK) 
-    
-    if request.method == "POST":
-        serializer = BlogSerializsers(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
-        
 
-@api_view(['GET','PUT','DELETE'])
-def blog_detials(request,pk):
-    if request.method == 'GET':
-        blog = Blog.objects.get(is_public = True, pk=pk)
-        serializer = BlogSerializsers(blog)
+class BlogReteriveCon(generics.RetrieveAPIView):
+    queryset = Blog.objects.all()
+    serializer_class  = BlogSerializer
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    if request.method == "PUT":
-        blog = Blog.objects.get(is_public = True, pk=pk)
-        serializer = BlogSerializsers(blog,data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
-        
-    if request.method == 'DELETE':
-        blog = Blog.objects.get(is_public = True,pk=pk)
-        blog.delete()
-        return Response("Data Delete Sucessfully", status=status.HTTP_200_OK)
 
-'''
+class BlogDestoryCon(generics.DestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class  = BlogSerializer
+
+
+class BlogUpdateCon(generics.UpdateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class  = BlogSerializer

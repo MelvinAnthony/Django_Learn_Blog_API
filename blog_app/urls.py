@@ -19,9 +19,15 @@ urlpatterns = [
 
                 # Generic Views
     path('blog_list_generic_view/', views.BlogListGenericView.as_view(), name = "blog_list_generic_view"),
-    path('blog_speciic_generic_view/<int:pk>/', views.BlogDetialGenericView.as_view(), name = "blog_specific_generic_view"),
+    #path('blog_speciic_generic_view/<int:pk>/', views.BlogDetialGenericView.as_view(), name = "blog_specific_generic_view"),
+    path('blog_speciic_generic_view/<str:slug>/', views.BlogDetialGenericView.as_view(), name = "blog_specific_generic_view"),
 
 
-
+                # Concrete View
+    path('blog_create_createapiview/',views.BlogCreateCon.as_view(), name='blog_create_createapiview'),
+    path('blog_list_createapiview/',views.BlogListCon.as_view(), name='blog_list_createapiview'),
+    path('blog_reterive_createapiview/<int:pk>',views.BlogReteriveCon.as_view(), name='blog_reterive_createapiview'),
+    path('blog_destory_createapiview/<int:pk>',views.BlogDestoryCon.as_view(), name='blog_destory_createapiview'),
+    path('blog_update_createapiview/<int:pk>',views.BlogUpdateCon.as_view(), name='blog_update_createapiview'),
             
 ]
