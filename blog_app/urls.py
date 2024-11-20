@@ -43,6 +43,13 @@ urlpatterns = [
 
 
                     #ViewSet
-    path('',include(router.urls))
+    path('',include(router.urls)),
+
+    #  ------------------------ Create a blog view using generics
+    path('blog_list/',views.BlogListCreateView.as_view(), name = 'blog_list'),
+    path('blog_detial/<int:pk>',views.BlogDetialCreateView.as_view(), name = 'blog_detial'),
+    path('blog_category_list/',views.CategoryListCreateView.as_view(), name = 'blog_category_list'),
+    path('blog_category_detial/<int:pk>',views.CategoryDetialCreateView.as_view(), name = 'blog_category_detial'),
+    
             
 ]
