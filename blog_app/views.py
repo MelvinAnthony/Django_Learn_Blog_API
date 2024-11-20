@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 
 from rest_framework import mixins, generics
-from rest_framework import viewsets
+from rest_framework import viewsets, serializers
 
 from django.shortcuts import *
 
@@ -234,7 +234,7 @@ class BlogListCreateView(generics.ListCreateAPIView):
         else:
             return Response({'message':'blog not found'}, status=status.HTTP_204_NO_CONTENT)
 
-        return super().list(request, *args, **kwargs)
+
     
     def create(self, request, *args, **kwargs):
         serializer = BlogSerializer(data=request.data, context = {'request': request})
@@ -286,3 +286,21 @@ class CategoryDetialCreateView(generics.RetrieveUpdateDestroyAPIView):
         
         else:
             return Response({'message':'blog not found'}, status=status.HTTP_204_NO_CONTENT)
+        
+
+#       Blog Comment List View
+class BlogCommentListCreateView(generics.ListCreateAPIView):
+    queryset = BlogComment.objects.all()
+    serializer_class = BlogCommentSerializer
+
+    def get_queryset(self):
+        blog_id = self.kwargs.get('blog_id')
+        return BlogComment.objects.filter(blog_id=blog_id)
+    
+    def perform_create(self, serializer):
+        blog_id = self.kwargs.get('blog_id')
+        blog = get_object_or_404(Blog, id = blog_id)
+        if BlogComment.objects.filter(blog=blog, author = self.request.user).exists():
+            raise serializers.ValidationError({"Message": "You have already done your command on Blog!!"})
+        serializer.save(author=self.request.user, blog=blog)
+        

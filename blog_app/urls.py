@@ -31,15 +31,15 @@ urlpatterns = [
                 # Concrete View
     path('blog_create_createapiview/',views.BlogCreateCon.as_view(), name='blog_create_createapiview'),
     path('blog_list_createapiview/',views.BlogListCon.as_view(), name='blog_list_createapiview'),
-    path('blog_reterive_createapiview/<int:pk>',views.BlogReteriveCon.as_view(), name='blog_reterive_createapiview'),
-    path('blog_destory_createapiview/<int:pk>',views.BlogDestoryCon.as_view(), name='blog_destory_createapiview'),
-    path('blog_update_createapiview/<int:pk>',views.BlogUpdateCon.as_view(), name='blog_update_createapiview'),
+    path('blog_reterive_createapiview/<int:pk>/',views.BlogReteriveCon.as_view(), name='blog_reterive_createapiview'),
+    path('blog_destory_createapiview/<int:pk>/',views.BlogDestoryCon.as_view(), name='blog_destory_createapiview'),
+    path('blog_update_createapiview/<int:pk>/',views.BlogUpdateCon.as_view(), name='blog_update_createapiview'),
     
     
     
-    path('blog_reterive_destory_createapiview/<int:pk>',views.BlogReteriveDestoryApiView.as_view(), name='blog_reterive_destory_createapiview'),
+    path('blog_reterive_destory_createapiview/<int:pk>/',views.BlogReteriveDestoryApiView.as_view(), name='blog_reterive_destory_createapiview'),
     path('blog_list_create_createapiview/',views.BlogListCreateApiView.as_view(), name='blog_list_create_createapiview'),
-    path('blog_create_update_delete_createapiview/<int:pk>',views.BlogRUDApiView.as_view(), name='blog_create_update_delete_createapiview'),
+    path('blog_create_update_delete_createapiview/<int:pk>/',views.BlogRUDApiView.as_view(), name='blog_create_update_delete_createapiview'),
 
 
                     #ViewSet
@@ -47,9 +47,13 @@ urlpatterns = [
 
     #  ------------------------ Create a blog view using generics
     path('blog_list/',views.BlogListCreateView.as_view(), name = 'blog_list'),
-    path('blog_detial/<int:pk>',views.BlogDetialCreateView.as_view(), name = 'blog_detial'),
+    path('blog_detial/<int:pk>/',views.BlogDetialCreateView.as_view(), name = 'blog_detial'),
     path('blog_category_list/',views.CategoryListCreateView.as_view(), name = 'blog_category_list'),
-    path('blog_category_detial/<int:pk>',views.CategoryDetialCreateView.as_view(), name = 'blog_category_detial'),
+    path('blog_category_detial/<int:pk>/',views.CategoryDetialCreateView.as_view(), name = 'blog_category_detial'),
+
+
+    # ------------------------ Comment blog 
+    path('blog_commant_list/<int:blog_id>/',views.BlogCommentListCreateView.as_view(), name = 'blog_commant_list'),
     
             
 ]
