@@ -12,6 +12,10 @@ from rest_framework import viewsets, serializers
 
 from django.shortcuts import *
 
+
+from rest_framework.permissions import *
+
+
 # -------------- Funtion based Views
 '''
 @api_view(['GET','POST'])
@@ -262,6 +266,15 @@ class BlogDetialCreateView(generics.RetrieveUpdateDestroyAPIView):
 class CategoryListCreateView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+    # it need login for view the class
+    #permission_classes = [IsAuthenticated]   
+    
+    # it need login using admin user to view
+    #permission_classes = [IsAdminUser]   
+    
+    # using login to edit the detial or hav the permission to view the data
+    permission_classes = [IsAuthenticatedOrReadOnly]   
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
