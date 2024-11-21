@@ -16,6 +16,9 @@ from django.shortcuts import *
 from rest_framework.permissions import *
 
 
+from .permissions import *
+
+
 # -------------- Funtion based Views
 '''
 @api_view(['GET','POST'])
@@ -252,6 +255,7 @@ class BlogDetialCreateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.filter(is_public = True)
     serializer_class = BlogSerializer
     liikup_field = 'id' # or slug
+    permission_classes = [IsOwnerorReadonly]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -274,7 +278,8 @@ class CategoryListCreateView(generics.ListCreateAPIView):
     #permission_classes = [IsAdminUser]   
     
     # using login to edit the detial or hav the permission to view the data
-    permission_classes = [IsAuthenticatedOrReadOnly]   
+    #Custom Permission: if user has admin he can able to perform CURD operation and not as admin means only read only option avilabile
+    permission_classes = [IsAdminUserorReadOnly]   
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
