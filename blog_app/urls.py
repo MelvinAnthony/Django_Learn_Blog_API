@@ -54,6 +54,7 @@ urlpatterns = [
 
     # ------------------------ Comment blog 
     path('blog_commant_list/<int:blog_id>/',views.BlogCommentListCreateView.as_view(), name = 'blog_commant_list'),
+    path('blog_commant_detial/blog/<int:blog_id>/comment/<int:comment_id>/',views.BlogCommentDetailView.as_view(), name = 'blog_commant_detial'),   
     
             
 ]

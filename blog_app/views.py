@@ -294,6 +294,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 class CategoryDetialCreateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsOwnerorReadonly]
 
    
     def retrieve(self, request, *args, **kwargs):
@@ -310,6 +311,7 @@ class CategoryDetialCreateView(generics.RetrieveUpdateDestroyAPIView):
 class BlogCommentListCreateView(generics.ListCreateAPIView):
     queryset = BlogComment.objects.all()
     serializer_class = BlogCommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         blog_id = self.kwargs.get('blog_id')
@@ -321,4 +323,31 @@ class BlogCommentListCreateView(generics.ListCreateAPIView):
         if BlogComment.objects.filter(blog=blog, author = self.request.user).exists():
             raise serializers.ValidationError({"Message": "You have already done your command on Blog!!"})
         serializer.save(author=self.request.user, blog=blog)
+
+
+class BlogCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BlogComment.objects.all()
+    serializer_class = BlogCommentSerializer
+    permission_classes = [IsOwnerorReadonly]
+    
+    def get_object(self):
+        comment_id = self.kwargs.get('comment_id')
+        comment = get_object_or_404(BlogComment, id = comment_id)
         
+        blog_id = self.kwargs.get("blog_id")
+        if comment.blog.id != blog_id:
+            raise serializers.ValidationError({"Message": "This comment is not related to the requested blog"}, status=status.HTTP_401_UNAUTHORIZED)
+        return comment
+    
+    def delete(self, request, *args, **kwargs):
+        comment = self.get_object()
+        if comment.author != request.user:
+            raise serializers.ValidationError({"Message": "You are not authorized to perform this action"}, status=status.HTTP_401_UNAUTHORIZED)
+        return super().delete(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        comment = self.get_object()
+        
+        if comment.author != request.user:
+            raise serializers.ValidationError({"Message": "You are not authorized to perform this action"}, status=status.HTTP_401_UNAUTHORIZED)
+        return super().delete(request, *args, **kwargs)

@@ -34,6 +34,7 @@ class Blog(models.Model):
             self.slug = base_slug + ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
         return super().save(*args, **kwargs)
 
+ 
 class BlogComment(models.Model):
     description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
