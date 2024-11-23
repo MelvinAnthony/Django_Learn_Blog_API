@@ -311,7 +311,7 @@ class CategoryDetialCreateView(generics.RetrieveUpdateDestroyAPIView):
 class BlogCommentListCreateView(generics.ListCreateAPIView):
     queryset = BlogComment.objects.all()
     serializer_class = BlogCommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         blog_id = self.kwargs.get('blog_id')
