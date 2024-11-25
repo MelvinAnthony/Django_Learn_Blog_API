@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/blog_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db  # Ensure the web app waits for the db service to be ready
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sql@2026
+      POSTGRES_DB: Blog_API
+    volumes:
+      - pg_data:/var/lib/postgresql/data  # Persist the database data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pg_data:  # Volume to persist PostgreSQL data
